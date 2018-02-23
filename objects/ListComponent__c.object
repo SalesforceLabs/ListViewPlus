@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Configs for List component</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>List1_query__c</fullName>
+        <externalId>false</externalId>
+        <label>List1_query</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>List1_title__c</fullName>
+        <externalId>false</externalId>
+        <label>List1_title</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List2_query__c</fullName>
+        <externalId>false</externalId>
+        <label>List2_query</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>List2_title__c</fullName>
+        <externalId>false</externalId>
+        <label>List2_title</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List3_query__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Query for List3</inlineHelpText>
+        <label>List3_query</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>List3_title__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List3 title</inlineHelpText>
+        <label>List3_title</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>ListComponent</label>
+    <visibility>Public</visibility>
+</CustomObject>
