@@ -23,6 +23,7 @@
         <members>ListViewPlusDataController</members>
         <members>ListViewPlusDataController_LV</members>
         <members>ListViewPlusTestController</members>
+        <members>ListViewPlusDataControllerTestSuite</members>
         <name>ApexClass</name>
     </types>
     <version>38.0</version>
