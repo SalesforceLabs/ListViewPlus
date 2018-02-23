@@ -1,0 +1,21 @@
+.THIS .chart-div {
+	width: 33%; 
+	display: inline-block;
+}
+.THIS .chart-div-canvas {
+	height:300; 
+	width:300;
+    
+}
+.THIS .chart-div-text {
+    /*margin-left:20%;*/
+    text-align:center;
+}
+
+.THIS.customBox{
+    /*padding: .25rem !important;*/
+    
+    border-radius: .25rem;
+    border: 1px solid rgb(216, 221, 230);
+    background-color: rgb(244, 246, 249) !important;
+}

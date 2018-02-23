@@ -1,0 +1,45 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" controller="ListViewPlusDataController">
+    <aura:attribute name="username" type="String"/>
+    <aura:attribute name="userprofile" type="String"/>
+    <aura:attribute name="chartslink" type="String" default="Overview"/>
+    <aura:attribute name="link1" type="String" default="listview1"/>
+    <aura:attribute name="link2" type="String" default="listview2"/>
+    <aura:attribute name="link3" type="String" default="listview3"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+
+    <lightning:tabset >
+        
+        <lightning:tab >
+           
+               <aura:set attribute="label">
+               {!v.chartslink} 
+            </aura:set>          
+		<c:ChartDataCmp isAdmin="{!v.isAdmin}" username="{!v.username}" componentTitle="{!v.chartslink}"/>
+           
+        </lightning:tab>
+        
+        <!--onactive="{! c.handleActive }" id="ListView1" -->
+        
+        <lightning:tab >
+        	 <aura:set attribute="label">
+               {!v.link1}
+            </aura:set>
+            <c:ListDataCmp ListViewName="ListView1" isAdmin="{#v.isAdmin}" listviewTitle="{!v.link1}"/>
+        </lightning:tab>
+       <lightning:tab >
+        	 <aura:set attribute="label">
+               {!v.link2}
+            </aura:set>
+            <c:ListDataCmp ListViewName="ListView2" isAdmin="{#v.isAdmin}" listviewTitle="{!v.link2}"/>
+        </lightning:tab>
+        <lightning:tab >
+        	 <aura:set attribute="label">
+               {!v.link3}
+            </aura:set>
+            <c:ListDataCmp ListViewName="ListView3" isAdmin="{#v.isAdmin}" listviewTitle="{!v.link3}"/>
+        </lightning:tab>
+        
+    </lightning:tabset>	
+     
+</aura:component>

@@ -1,0 +1,25 @@
+<aura:component >
+    <aura:attribute name="contact" type="Contact"></aura:attribute>
+	
+     
+            <!--img src="{!$Resource.slds + '/assets/images/avatar1.jpg'}" alt="Contact Image"/-->
+            <div class="container">
+      {!v.contact.FirstName[0]}{!v.contact.LastName[0]}
+       <div class="name" >
+        {!v.contact.FirstName}&nbsp;{!v.contact.LastName}
+    </div>
+                </div>
+        
+            <div>&nbsp;</div>
+            <div>
+            <lightning:icon size="xx-small" iconName="standard:call"></lightning:icon>
+            <span class="customColor">&nbsp;{!v.contact.Phone}</span>
+            </div>
+            <div>&nbsp;</div>
+            <div>
+             <lightning:icon size="xx-small" iconName="standard:email"></lightning:icon>
+            <span class="customColor">&nbsp;{!v.contact.Email}</span>
+    
+            </div>
+    
+</aura:component>

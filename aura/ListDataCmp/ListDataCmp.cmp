@@ -1,0 +1,146 @@
+<aura:component access="global" controller="ListViewPlusDataController">
+    <aura:registerEvent name="ListCloseEvent" type="c:ListCloseEvent"/>
+    <aura:attribute name="triggered" type="String" default="List"/>
+    <aura:attribute name="colSize" type='Integer'/>
+    <aura:attribute name="listsize" type='Integer' default="20"/>
+    <aura:attribute name="recordCount" type='Integer'/>
+    <aura:attribute name="recordCountDisplay" type='Integer' default="2000"/>
+    <aura:attribute name="pageIndex" type='Integer' default="0"/>
+    <aura:attribute name="leftIndex" type='Integer' default="0"/>
+    <aura:attribute name="rightIndex" type='Integer' default="20"/>
+    <aura:attribute name="fieldLabels" type='List'/>
+    <aura:attribute name="fieldTypes" type='List'/>
+    <aura:attribute name="fieldNames" type='List'/>
+    <aura:attribute name="metadataready" type='boolean' default="false"/>
+    <aura:attribute name="hidelist" type='boolean' default="false"/>
+    <aura:attribute name="listviewTitle" type="String"/>
+    <aura:attribute name="processCols" type='String[]'/>
+    <aura:attribute name="pastRecords" type='List'/> <!-- remove -->
+    <aura:attribute name="futureRecords" type='List'/> <!-- remove -->
+    <aura:attribute name="currentrecords" type='Object[]' default="{'Name': 'BARBARA HURST Auto November 2016', 'AccountId': '0016A000003boP4QAI', 'StageName': 'Confirm Interest', 'Amount: 7741'}"/>
+    <aura:attribute name="dbrecords" type='Object[]'/>
+    
+    <aura:attribute name="records" type='Object[]'/>
+    <aura:attribute name="recordschanged" type='Boolean' default="false"/>
+    <aura:attribute name="Allrecordschanged" type='Boolean' default="false"/>
+    <aura:attribute name="searchrecords" type='List'/>
+    <aura:attribute name="listtitle" type='String'/>
+    <aura:attribute name="filterCriteria" type='String' default=''/>
+    <aura:attribute name="orderingCriteria" type='String' default=''/>
+    <aura:attribute name="displayLabels" type="String[]"/>
+    <aura:attribute name="sortedBy" type="String"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:attribute name="searchKey" type='String'/>
+    <aura:attribute name="searchResults" type='String'/>
+    <aura:attribute name="displayedResults" type='String'/>
+    <aura:attribute name="initRecords" type='List'/>
+    <aura:attribute name="resetRecords" type='List'/>
+    <aura:attribute name="listIndex" type='Integer'/>
+    <aura:handler name="change" value="{!v.recordschanged}" action="{!c.itemsChange}"/>
+    <aura:handler name="change" value="{!v.Allrecordschanged}" action="{!c.itemsChange}"/>
+    <aura:handler name="change" value="{!v.metadataready}" action="{!c.getMetadata}"/>
+    <aura:handler name="change" value="{!v.searchkey}" action="{!c.Search}"/>
+  	<aura:attribute name="leftDisabled" type="boolean" default="true" />
+    <aura:attribute name="rightDisabled" type="boolean" default="true" />
+    <aura:attribute name="resetDisable" type="boolean" default="true"/>
+    <aura:attribute name="defaultview" type="boolean" default="true"/>
+    <aura:attribute name="showsetup" type="boolean" default="false"/>
+    <aura:handler name="ListCloseEvent" event="c:ListCloseEvent" action="{!c.closeList}"/>
+    <aura:attribute name="ListViewName" type="String"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <aura:attribute name="dataloaded" type="Boolean" default='true'/>
+    <aura:attribute name="mycolumns" type="List"/>
+   <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+         
+    <!-- to avoid DB call every time search is reset-->
+   	<div class="topcomponentbox slds-box" style="background-color:rgb(250, 250, 249)">
+   <div class="slds-grid">  
+       <div class="slds-col slds-size_1-of-5"> 
+         <h3 class="slds-section__title">
+            <span title="Section Title">{!v.listviewTitle}</span>
+         </h3>
+       </div>
+               
+         <aura:if isTrue="{!v.isAdmin}">
+          <div class="configure slds-col">
+         <lightning:buttonIcon title="Click to Configure This Listview" iconName="utility:setup"  size="large" alternativeText="refresh this view" onclick="{! c.doConfigure }" variant="bare" />
+        </div>
+               </aura:if>
+         
+ 
+      <div class="searchbox slds-col slds-size_1-of-3">
+    <ui:InputText aura:id="searchBox" placeholder="{!'Enter text for in-context search of ' + v.recordCountDisplay +' records'}" value="{!v.searchKey}"></ui:InputText>
+         
+      </div>
+    <div class="searchbutt slds-col slds-size_1-of-12">       
+        <div class="slds-m-left_xx-small">
+            <lightning:buttonIcon title="Search in this list" iconName="utility:search"  size="large" alternativeText="refresh this view" onclick="{! c.Search }" variant="bare" /></div>
+       </div>
+        
+   
+   <div class="refresh slds-col ">
+  <lightning:buttonIcon title="refresh this view" iconName="utility:refresh"  size="large" alternativeText="refresh this view" onclick="{! c.refresh }" variant="bare" />
+        </div>
+  <div class="leftarrow slds-col">
+       <lightning:buttonIcon title="Go To Previous Page Of This List" iconName="utility:left"  size="large" alternativeText="refresh this view" onclick="{! c.pressLeft }" disabled="{!v.leftDisabled}"/>
+        </div>
+   <div class="reccount slds-col">
+        <h6 class="slds-small-size slds-section__title" > {!v.leftIndex} - {!v.rightIndex} of {!v.recordCountDisplay} </h6> 
+        </div>
+     <div class="rightarrow slds-col">
+    <lightning:buttonIcon title="Go To Next Page Of This List" iconName="utility:right"  size="large" alternativeText="refresh this view" onclick="{! c.pressRight }" disabled="{!v.rightDisabled}"/>
+   </div>  
+       <div class="charthelp slds-col">
+
+        <lightning:helptext iconName="utility:help" content="Use Listview to see records for a certain object.
+                                                                 Click the next and previous arrows to navigate the list.
+                                                                 Use the search box to search for any of the columns shown, search is limited to records in the list.
+                                                                 Click refresh to reset the view."/>
+        
+        </div> 
+       <div class="closeme slds-col"> 
+                 <aura:if isTrue="{!v.hidelist}"> 
+        <div class="slds-float_right slds-m-right_medium">
+         <lightning:buttonIcon title="Maximize the list window" iconName="utility:expand_alt" size="large" onclick="{!c.minimizeList }" alternativeText="Expand the List" variant="bare"/>
+            </div>            
+        </aura:if>
+           <aura:if isTrue="{!v.defaultview}"> 
+            <div>
+         <lightning:buttonIcon title="Minimize the list window" iconName="utility:contract_alt" size="large" onclick="{!c.minimizeList }" alternativeText="Minimize the list" variant="bare"/>
+            </div>
+           </aura:if>
+       </div>       
+        </div>
+        
+        
+      
+      <aura:if isTrue="{!v.defaultview}">
+     <div class="table-box slds-box slds-is-relative slds-m-top_medium">  	
+        <aura:if isTrue="{!v.dataloaded}">
+         <div class="slds-spinner_container">
+    		<div role="status" class="slds-spinner slds-spinner_small">
+      <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a">
+         <lightning:spinner aura:id="mySpinner" />
+           </div>
+    		</div>
+  		</div>		
+       </aura:if>            
+     <lightning:datatable data="{! v.currentrecords }"
+        columns="{! v.mycolumns }"
+        keyField="Id"
+        hideCheckboxColumn="false"
+        resizeColumnDisabled="true"
+        minColumnWidth="60px"
+        maxColumnWidth="80px"                  
+        onsort="{!c.updateColumnSorting}"
+        sortedDirection="{!v.sortedDirection}"
+        sortedBy="{!v.sortedBy}"/>   
+     </div>
+        </aura:if>
+        <aura:if isTrue="{!v.showsetup}">
+        	<c:KaribuSetupCmp ViewType="{!v.ListViewName}" isListView="true"/> 
+        </aura:if>
+    </div>
+</aura:component>

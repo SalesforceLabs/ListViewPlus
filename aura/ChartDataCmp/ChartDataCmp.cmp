@@ -1,0 +1,116 @@
+<aura:component access="global" controller="ListViewPlusDataController" >
+    <ltng:require scripts="{!$Resource.ChartJS23}" afterScriptsLoaded="{!c.scriptsLoaded}" />
+    <aura:attribute name="Chart1" type="Object" />
+    <aura:attribute name="Chart2" type="Object" />
+    <aura:attribute name="Chart3" type="Object" />
+    <aura:attribute name="records" type="List" default="[{val: 2, key: 6},{val: 4, key: 6},{val: 4, key: 6}]"/>
+    <aura:attribute name="chartObject" type="Object"/>
+    <aura:attribute name="username" type="String"/>
+    <aura:attribute name="Chart1Ready" type="Boolean"/>
+    <aura:attribute name="Chart2Ready" type="Boolean"/>
+    <aura:attribute name="Chart3Ready" type="Boolean"/>
+    <aura:attribute name="defaultview" type="boolean" default="true"/>
+    <aura:attribute name="showsetup" type="boolean" default="false"/>
+    <aura:attribute name="componentTitle" type="String"/>
+    <aura:attribute name="chart1Title" type="String" default="Chart1"/>
+    <aura:attribute name="chart2Title" type="String" default="Chart2"/>
+    <aura:attribute name="chart3Title" type="String" default="Chart3"/>
+    <aura:attribute name="showhelp" type="Boolean" default="false"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:attribute name="dataloaded" type="Boolean" default='true'/>
+    <aura:attribute name="objects" type="SObject[]" />
+    <aura:attribute name="edit" type="Boolean" default='true'/>
+    <aura:handler name="ListCloseEvent" event="c:ListCloseEvent" action="{!c.closeList}"/>
+    <aura:handler name="change" value="{!v.Chart1Ready}" action="{!c.buildChart1}"/>
+    <aura:handler name="change" value="{!v.Chart2Ready}" action="{!c.buildChart2}"/>
+    <aura:handler name="change" value="{!v.Chart3Ready}" action="{!c.buildChart3}"/>
+    <aura:handler name="change" value="{!v.defaultview}" action="{!c.buildChart3}"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <div class="topbox slds-box" style="background-color:rgb(250, 250, 249)">
+   
+<div class="darkBackGround" style="background-color:rgb(250, 250, 249)">
+    <div class="slds-grid">
+      <div class="slds-col slds-size_1-of-3 slds-p-top_xxx-small">
+           <lightning:icon iconName="action:user" size="small" alternativeText="User"/>         
+          <span class="slds-text-title_caps slds-m-left_small">{!v.username}</span> 
+              </div>
+ 		<div class="slds-col slds-size_1-of-8"></div>
+        <div class="slds-col slds-size_1-of-3 slds-float_right slds-m-top_x-small">
+          	<span class="slds-text-title_caps">{!v.componentTitle}</span> 
+        </div>
+     
+        <div class="slds-col slds-size_1-of-3">
+          <div class="slds-grid">
+              
+              
+              
+     <aura:if isTrue="{!v.isAdmin}">
+           <div class="slds-col slds-size_1-of-5"> 
+     <lightning:buttonIcon title="configure listview columns" iconName="utility:setup"  
+                           size="large" alternativeText="refresh this view" 
+                           onclick="{! c.doConfigure }" variant="bare" />
+     </div>
+     </aura:if>
+             
+      <div class="slds-col slds-size_1-of-5">  
+           <div class="charthelp slds-float_right slds-m-bottom_medium">
+        <lightning:helptext iconName="utility:help" content="Charts summary data over a quarter. By default grouping is by record created in a quarter.
+                                                                 An admin can change this. Clicking on a legend removes the data for a certain month."/> </div> 
+          
+        </div>
+        </div>
+</div>
+    </div>
+     <aura:if isTrue="{!v.dataloaded}">
+            <div class="slds-spinner_container">
+    <div role="status" class="slds-spinner slds-spinner_small">
+      <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a">
+         <lightning:spinner aura:id="mySpinner" />
+            
+           </div>
+    </div>
+  </div>		
+       </aura:if>	
+    
+    <div class="slds-box slds-m-top_x-small">
+        
+      <div class="slds-grid">
+          
+        <div class="chart01 slds-col slds-size_1-of-3">
+            <div id="ChartText" class="chart-div-text">{!v.chart1Title}</div>
+	    <canvas aura:id="Chart1" Id="Chart1" class="chart-div-canvas" onclick="{!c.chartClicked}"></canvas>
+	    </div>
+            
+           
+            
+        <div class="chart02 slds-col slds-size_1-of-3">       
+            <div class="chart-div-text">{!v.chart2Title}</div>
+	    <canvas aura:id="Chart2" class="chart-div-canvas" Id="Chart2" onclick="{!c.chartClicked}"></canvas><!--Updated onclick to be same for all for LV demo-->
+                
+                </div>
+            
+            
+       <div class="chart03 slds-col slds-size_1-of-3">         
+           <div class="chart-div-text">{!v.chart3Title}</div>
+	    <canvas aura:id="Chart3" class="chart-div-canvas" Id="Chart3" onclick="{!c.chartClicked}"></canvas>
+	    
+                </div>
+           
+    </div>
+        
+    </div>
+    
+     <aura:if isTrue="{!v.showsetup}">
+         <div class="slds-box slds-m-top_medium">
+        	<c:KaribuSetupCmp isChart="true"/> 
+         </div>
+        </aura:if>
+</div>
+</div>
+    
+<!--div onmouseleave="{!c.moveout}"-->
+    {!v.body} 
+    <!--/div-->    
+	 
+</aura:component>
