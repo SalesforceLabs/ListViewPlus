@@ -198,7 +198,7 @@
     helpText: function(component,event,helper){
         
         component.find('notifLib').showToast({
-            "title": "Using Karibu Lists",
+            "title": "Using ListViewPlus Lists",
             "message": "This list view shows data for an object based on configuration. The search box can search on an column and search is with the localy available records. The view can be refreshed by clicking the refresh button.",
             "mode":"dismissible"
         });
