@@ -1,0 +1,56 @@
+Purpose
+
+The purpose of this document is to provide an overview of the ListView Plus Lightning components its features, use cases and current release scope. 
+
+Overview 
+
+What is ListView Plus
+
+ListView Plus is a set of Lightning components which can be added to any page in Lightning experience to provide users with quick access to relevant and frequently used data in the form of interactive and dynamic Charts and Listviews.
+Listview plus can be installed from *Salesforce Labs *into any Lightning enabled Organization. 
+
+*Note: *Listview Plus is a *Salesforce Labs* listed custom component.  Salesforce Labs apps are free to use, but are not official Salesforce products. These apps are not officially tested, documented or supported.
+
+Features
+Overview Charts
+
+Overview charts show users with data summarized from different entities based on criteria they define. Charts are interactive. Charts are flexible, the chart labels can be configured. 
+The legends for each chart can be clicked to dynamically remove the associated data-set thereby showing smaller data-sets.
+Charts are interactive!
+Clicking in a section of a chart will render a Listview of data specific to that section of the chart. Example opportunities created in a month of the last quarter.
+
+Searchable ListViews
+
+A unique searchable Listview!
+The Listview component shows a *fast* and *scalable* Listview. Listviews can be configured to show records of any object standard or custom. 
+*Unique feature!* Users can search any text for an in-context search of the records available the Listview.
+User can also *sort* any column in the Listview.   
+Listview can be dynamically minimized or expanded to show other components on the page. 
+
+Searchable ListViews
+
+A unique searchable Listview!
+The Listview component shows a *fast* and *scalable* Listview. Listviews can be configured to show records of any object standard or custom. 
+*Unique feature!* Users can search any text for an in-context search of the records available the Listview.
+User can also *sort* any column in the Listview.   
+Listview can be dynamically minimized or expanded to show other components on the page. 
+
+Support multi profiles
+
+Scalable to many profiles!
+An administrator can configure the Charts and Listviews for users in different *profiles*. Users in each profile can view a different set of charts and Listviews each showing data from different objects. 
+
+Simple configurations
+
+ListView plus components are backed up by a *custom setting *enabling an administrator to fine tune the data shown by the Listview and Chart components. 
+
+Note: User with administrator privileges can install and configure the components for all other users and profiles. 
+
+Browser support
+
+Browsers supported in this release is only Chrome. Future releases will support Firefox and IE with limited capabilities. 
+
+Refer to Installation notes for installing and configuring the component. 
+https://salesforce.quip.com/M5TYAdubhqve 
+
+
