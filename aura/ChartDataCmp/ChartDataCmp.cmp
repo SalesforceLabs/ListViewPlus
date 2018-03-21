@@ -56,13 +56,13 @@
            <div class="charthelp slds-float_right slds-m-bottom_medium">
         <lightning:helptext iconName="utility:help" content="Charts summary data over a quarter. By default grouping is by record created in a quarter.
                                                                  An admin can change this. Clicking on a legend removes the data for a certain month."/> </div> 
-          
+           
         </div>
         </div>
 </div>
     </div>
      <aura:if isTrue="{!v.dataloaded}">
-            <div class="slds-spinner_container">
+            
     <div role="status" class="slds-spinner slds-spinner_small">
       <span class="slds-assistive-text">Loading</span>
         <div class="slds-spinner__dot-a">
@@ -70,7 +70,7 @@
             
            </div>
     </div>
-  </div>		
+  
        </aura:if>	
     
     <div class="slds-box slds-m-top_x-small">

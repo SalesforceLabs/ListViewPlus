@@ -1,15 +1,3 @@
-#-------------------------------------------------------------------------------
-# /* 
-#  * Copyright (c) 2018, salesforce.com, inc.
-#  * All rights reserved.
-#  * Licensed under the BSD 3-Clause license. 
-#  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
-#  */
-# /*
-# *ListView Plus* is a set of Lightning components which can be added to any page in Lightning experience to provide users with quick access to relevant and frequently used data in the form of interactive and dynamic Charts and Listviews.
-# Listview plus can be installed from *Salesforce Labs *into any Lightning enabled Organization. 
-# */
-#-------------------------------------------------------------------------------
 ({
     buildDefaultChart : function(component,helper,event,chartName) {
         var ctx = component.find(chartName).getElement();
@@ -115,6 +103,7 @@
     },
     
     getListChart: function(component,event,helper,ChartName,label) {
+        console.log(ChartName);
         $A.createComponent(
             "c:ListDataCmp",
             {
@@ -146,34 +135,45 @@
         var spinner = component.find("mySpinner");
         var actAction= component.get("c.getChartData");
         actAction.setParams({"chartName":chart});
-      	actAction.setStorable();
+      	//actAction.setStorable();
       	actAction.setCallback(this,function(response){
           	
             var state= response.getState();
             if(component.isValid() && state == "SUCCESS"){
-                var records=response.getReturnValue();
-                console.log(records);
-                component.set("v.records",records);
-                               
+                var records=response.getReturnValue();   
+                component.set("v.records",records);                               
                 if (chartName == "Chart1") {
+                    if (Object.keys(records).length == 0) {
+    				 this.showDataInfoToast(component,"Right side chart");             	
+                	}
+                    else {
                 	component.set("v.Chart1Ready",true); 
-                    
-                }
+                    }
+                } 
                 if (chartName == "Chart2") {
-                    component.set("v.Chart2Ready",true);}
-                	
+                    if (Object.keys(records).length == 0) {
+    				 this.showDataInfoToast(component,"Middle Chart");             	
+                	}
+                    else {
+                    	component.set("v.Chart2Ready",true);
+                    }    
+                    }
                 if (chartName == "Chart3") {
+                    if (Object.keys(records).length == 0) {
+    				 this.showDataInfoToast(component,"Left side chart");             	
+                	}
+                    else {
                     component.set("v.Chart3Ready",true); 
-                    
+                    }
                 }
                 component.set("v.dataloaded",false);
                 if (!component.get("v.dataloaded")) {
-                    $A.util.toggleClass(spinner, "slds-hide");  
+                    //$A.util.toggleClass(spinner, "slds-hide");  
                 }
             
             else {
                 this.showErrorToast(component,event,helper);
-                $A.util.toggleClass(spinner, "slds-hide"); 
+                //$A.util.toggleClass(spinner, "slds-hide"); 
                 console.log('Failed state');
             }
        	 }
@@ -186,24 +186,29 @@
         var metaMap = new Map();
         var metaaction = component.get("c.getListViewMetadata");
         metaaction.setParams({"resource":chartName});
+        //metaaction.setStorable();
         metaaction.setCallback(this,function(response){
             var state= response.getState();
             if(component.isValid() && state == "SUCCESS"){
                 var metaMap=response.getReturnValue();
                 
+                 if (Object.keys(metaMap).length == 0) {
+    				 this.showErrorToast(component);             	
+	                 console.log("no config");  
+                     
+                }
+                else {
                 if (chartName == "Chart1") {
+                    
                    component.set("v.chart1Title",metaMap.title[0]);
                    component.set("v.componentTitle",metaMap.title[1]);
-                   
                 }
                 if (chartName == "Chart2") {
                    component.set("v.chart2Title",metaMap.title[0]);  
                 }
                 if (chartName == "Chart3") {
                    component.set("v.chart3Title",metaMap.title[0]);
-                   
-                   
-                   
+                }     
                 }
             }
             else {
@@ -248,7 +253,14 @@
     showErrorToast : function(component) {
      component.find('notifLib').showToast({
             "title": "Error! One or more of charts failed to load",
-            "message": "Unable to retrieve data from server. Please contact your system administrator.",
+            "message": "Unable to retrieve data from server. If this is a 1st time usage it's possible configuration is not complete. Please contact your system administrator.",
+            "mode":"dismissible"
+        });
+	},
+    showDataInfoToast : function(component, chartname) {
+     component.find('notifLib').showToast({
+            "title": chartname + " failed to load",
+            "message": "It's possible the chart did not get any data. Please contact your system administrator to set the right configuration.",
             "mode":"dismissible"
         });
 	},

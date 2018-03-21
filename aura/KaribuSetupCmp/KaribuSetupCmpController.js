@@ -1,15 +1,3 @@
-#-------------------------------------------------------------------------------
-# /* 
-#  * Copyright (c) 2018, salesforce.com, inc.
-#  * All rights reserved.
-#  * Licensed under the BSD 3-Clause license. 
-#  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
-#  */
-# /*
-# *ListView Plus* is a set of Lightning components which can be added to any page in Lightning experience to provide users with quick access to relevant and frequently used data in the form of interactive and dynamic Charts and Listviews.
-# Listview plus can be installed from *Salesforce Labs *into any Lightning enabled Organization. 
-# */
-#-------------------------------------------------------------------------------
 ({
 	
     ChartSelected: function (component, event, helper) {
@@ -133,7 +121,7 @@
  			var summaryfield = aggfunc + "(" + component.get("v.selectedsumaryfield") + " )";
             console.log(summaryfield);
             action = component.get("c.SaveCharts");
-            var query = "SELECT " + summaryfield + " val, " + "CALENDAR_MONTH( createdDate ) key " + " FROM " + object + " WHERE  createdDate = LAST_N_YEARS:1 GROUP BY CALENDAR_MONTH(createdDate)";
+            var query = "SELECT " + summaryfield + " val, " + "CALENDAR_MONTH( createdDate ) key " + " FROM " + object + " WHERE  createdDate = LAST_N_MONTHS:3 GROUP BY CALENDAR_MONTH(createdDate)";
             var chartlistquery = "SELECT " + selectedFields + " FROM " + object + " WHERE CALENDAR_MONTH( createdDate )  =:mon LIMIT 200";
             console.log(query + chartlistquery);
             //var viewtype = component.get("v.ViewType");
@@ -145,7 +133,7 @@
         if (IsListView) {
             var selectedFields = (component.get("v.selectedfieldlist")).join(); 
             var title = component.get("v.Title");
-            var query = "SELECT " + selectedFields + " FROM " + object + " WHERE  createdDate = LAST_N_YEARS:1 LIMIT 2000";
+            var query = "SELECT " + selectedFields + " FROM " + object + " WHERE  createdDate = LAST_N_MONTHS:12 LIMIT 2000";
             var ListViewName = component.get("v.ViewType");
             console.log(ListViewName);
             action = component.get("c.SaveLists");
