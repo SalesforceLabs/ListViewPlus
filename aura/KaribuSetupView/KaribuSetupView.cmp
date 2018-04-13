@@ -1,3 +1,0 @@
-<aura:component >
-    <c:KaribuSetupCmp ViewType="listView2" isListView="true" isChart="false"/>
-</aura:component>
