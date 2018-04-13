@@ -33,13 +33,7 @@
             </aura:set>
             <c:ListDataCmp ListViewName="ListView2" isAdmin="{#v.isAdmin}" listviewTitle="{!v.link2}"/>
         </lightning:tab>
-        <lightning:tab >
-        	 <aura:set attribute="label">
-               {!v.link3}
-            </aura:set>
-            <c:ListDataCmp ListViewName="ListView3" isAdmin="{#v.isAdmin}" listviewTitle="{!v.link3}"/>
-        </lightning:tab>
-        
+              
     </lightning:tabset>	
      
 </aura:component>
