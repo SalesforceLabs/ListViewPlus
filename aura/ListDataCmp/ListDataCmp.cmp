@@ -140,7 +140,15 @@
      </div>
         </aura:if>
         <aura:if isTrue="{!v.showsetup}">
-        	<c:KaribuSetupCmp ViewType="{!v.ListViewName}" isListView="true"/> 
+        	<!--<c:KaribuSetupCmp ViewType="{!v.ListViewName}" isListView="true"/> -->
+            <lightning:button class="slds-button slds-button_destructive slds-m-top_medium slds-m-bottom_small" label="Reset ListView" onclick="{!c.ListResetHandler}"/>
+           
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+  			<span class="slds-assistive-text">info</span>
+              <h1>Clicking button will reset this ListView to show default data using predefined SOQL. Any changes you made in the custom settings will be lost.
+             Click on setup Icon again to close this view</h1>
+            </div>
+            
         </aura:if>
     </div>
 </aura:component>

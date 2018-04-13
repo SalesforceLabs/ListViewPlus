@@ -1,15 +1,17 @@
 ({
     buildDefaultChart : function(component,helper,event,chartName) {
-        var ctx = component.find(chartName).getElement();
+      var ctx = component.find(chartName).getElement();
       //helper.buildDefaultChart(component,helper,event,ctx1);
        var chart = new Chart(ctx,{type: 'doughnut',
             	data: this.getCasesData(component),
+                                  
            		options: {
                 			animation : false,
                			 	responsive: true,
                 			maintainAspectRatio: true,
                 			legend:{
                 					display:true,
+                                	fontColor:'rgb(255, 99, 132)',
                                 position: 'bottom'
                 					}}});
         if (chartName == 'Chart1') {
@@ -63,26 +65,9 @@
       return monthsObject[monthNumber];
     },
    
-	getOppData : function(component) {
-        
-        var accData= new Map();
-    	accData.set('January',23433.90);
-    	accData.set('February',74647.90);
-    	accData.set('March',74647.90);
-        return accData;
-	},
-    
-    getActivitiesData : function(component) {
-        var actData= new Map();
-    	actData.set('January',84);
-    	actData.set('February',67);
-    	actData.set('March',20);
-        return actData;
-	},
-    
     getCasesData : function(component) {
         var actData1= new Map();
-    	actData1.set('January',30);
+    	actData1.set('No Data',84);
         var casesLabels= []
         var casesValues=[];
         for(var key of actData1.keys()){
@@ -93,9 +78,9 @@
         labels:casesLabels,
         datasets:[ {
         				data:casesValues,// for map.key(Q1)//
-        				backgroundColor:["#2ecc71",
-        								 "#3498db",
-        								 "#95a5a6"]
+        				backgroundColor:["#E7E9EE",
+        								 "#FAF5E8",
+        								 "#F8FEFD"]
         
         }]
         };
@@ -144,10 +129,10 @@
                 component.set("v.records",records);                               
                 if (chartName == "Chart1") {
                     if (Object.keys(records).length == 0) {
-    				 this.showDataInfoToast(component,"Right side chart");             	
+    				 	this.showDataInfoToast(component,"Right side chart"); 
                 	}
                     else {
-                	component.set("v.Chart1Ready",true); 
+                		component.set("v.Chart1Ready",true);    
                     }
                 } 
                 if (chartName == "Chart2") {
@@ -176,7 +161,17 @@
                 //$A.util.toggleClass(spinner, "slds-hide"); 
                 console.log('Failed state');
             }
+                if (!component.get("v.Chart1Ready")) {
+                    component.set("v.chart1Title","Chart1 Data Unavailable.");
+                }
+                if (!component.get("v.Chart2Ready")) {
+                    component.set("v.chart2Title","Chart2 Data Unavailable.");
+                }
+                if (!component.get("v.Chart3Ready")) {
+                    component.set("v.chart3Title","Chart3 Data Unavailable");
+                }
        	 }
+            
        	});
         $A.enqueueAction(actAction);
     },
@@ -198,11 +193,11 @@
                      
                 }
                 else {
-                if (chartName == "Chart1") {
-                    
-                   component.set("v.chart1Title",metaMap.title[0]);
-                   component.set("v.componentTitle",metaMap.title[1]);
-                }
+                if (chartName == "Chart1") {   
+                        component.set("v.chart1Title",metaMap.title[0]);
+                    	component.set("v.componentTitle",metaMap.title[1]);
+                }   
+                  
                 if (chartName == "Chart2") {
                    component.set("v.chart2Title",metaMap.title[0]);  
                 }
@@ -264,4 +259,27 @@
             "mode":"dismissible"
         });
 	},
+    ResetToast : function(component) {
+     component.find('notifLib').showToast({
+            "title": "View reset done!",
+            "message": "The data on this chart or listview has been reset to show default data",
+            "mode":"dismissible"
+        });
+    },
+    
+    doReset:function(component,event,helper) {
+        var action= component.get("c.resetCharts");        
+        	
+        action.setCallback(this,function(response){
+        var state= response.getState();
+        
+        if(component.isValid() && state == "SUCCESS"){
+            	this.ResetToast(component); 
+    	}
+        else {
+        	console.log("Reset No done correctly");        
+        }
+        });
+        $A.enqueueAction(action);   
+      },
 })

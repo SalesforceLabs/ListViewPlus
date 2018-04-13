@@ -6,7 +6,8 @@
     <aura:attribute name="records" type="List" default="[{val: 2, key: 6},{val: 4, key: 6},{val: 4, key: 6}]"/>
     <aura:attribute name="chartObject" type="Object"/>
     <aura:attribute name="username" type="String"/>
-    <aura:attribute name="Chart1Ready" type="Boolean"/>
+    <aura:attribute name="Chart1data" type="Boolean" default="true"/>
+    <aura:attribute name="Chart1Ready" type="Boolean" default="false"/>
     <aura:attribute name="Chart2Ready" type="Boolean"/>
     <aura:attribute name="Chart3Ready" type="Boolean"/>
     <aura:attribute name="defaultview" type="boolean" default="true"/>
@@ -24,7 +25,7 @@
     <aura:handler name="change" value="{!v.Chart1Ready}" action="{!c.buildChart1}"/>
     <aura:handler name="change" value="{!v.Chart2Ready}" action="{!c.buildChart2}"/>
     <aura:handler name="change" value="{!v.Chart3Ready}" action="{!c.buildChart3}"/>
-    <aura:handler name="change" value="{!v.defaultview}" action="{!c.buildChart3}"/>
+    <!--<aura:handler name="change" value="{!v.defaultview}" action="{!c.buildChart3}"/>-->
     <lightning:notificationsLibrary aura:id="notifLib"/>
     <div class="topbox slds-box" style="background-color:rgb(250, 250, 249)">
    
@@ -36,7 +37,7 @@
               </div>
  		<div class="slds-col slds-size_1-of-8"></div>
         <div class="slds-col slds-size_1-of-3 slds-float_right slds-m-top_x-small">
-          	<span class="slds-text-title_caps">{!v.componentTitle}</span> 
+          	<div class="cmp-header-text">{!v.componentTitle}</div> 
         </div>
      
         <div class="slds-col slds-size_1-of-3">
@@ -78,33 +79,35 @@
       <div class="slds-grid">
           
         <div class="chart01 slds-col slds-size_1-of-3">
-            <div id="ChartText" class="chart-div-text">{!v.chart1Title}</div>
-	    <canvas aura:id="Chart1" Id="Chart1" class="chart-div-canvas" onclick="{!c.chartClicked}"></canvas>
-	    </div>
-            
+            <div id="ChartText" class="chart-div-text"><h2>{!v.chart1Title}</h2></div>
            
-            
+	    <canvas aura:id="Chart1" Id="Chart1" class="chart-div-canvas" onclick="{!c.chartClicked}"></canvas>
+           
+	    </div>
         <div class="chart02 slds-col slds-size_1-of-3">       
             <div class="chart-div-text">{!v.chart2Title}</div>
 	    <canvas aura:id="Chart2" class="chart-div-canvas" Id="Chart2" onclick="{!c.chartClicked}"></canvas><!--Updated onclick to be same for all for LV demo-->
                 
                 </div>
-            
-            
+          
        <div class="chart03 slds-col slds-size_1-of-3">         
            <div class="chart-div-text">{!v.chart3Title}</div>
 	    <canvas aura:id="Chart3" class="chart-div-canvas" Id="Chart3" onclick="{!c.chartClicked}"></canvas>
 	    
                 </div>
-           
     </div>
         
     </div>
     
      <aura:if isTrue="{!v.showsetup}">
-         <div class="slds-box slds-m-top_medium">
-        	<c:KaribuSetupCmp isChart="true"/> 
-         </div>
+         
+        <lightning:button class="slds-button slds-button_destructive slds-m-top_medium slds-m-bottom_small" label="Reset Charts" onclick="{!c.chartResetHandler}"/>
+           
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+  			<span class="slds-assistive-text">info</span>
+            <h1>This will reset all Charts to show default data using predefined SOQL queries. Any changes you made in the custom settings will be lost.
+             Click on setup Icon again to close this view</h1>
+            </div>
         </aura:if>
 </div>
 </div>

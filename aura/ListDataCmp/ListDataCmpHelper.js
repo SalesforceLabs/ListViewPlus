@@ -1,15 +1,3 @@
-#-------------------------------------------------------------------------------
-# /* 
-#  * Copyright (c) 2018, salesforce.com, inc.
-#  * All rights reserved.
-#  * Licensed under the BSD 3-Clause license. 
-#  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
-#  */
-# /*
-# *ListView Plus* is a set of Lightning components which can be added to any page in Lightning experience to provide users with quick access to relevant and frequently used data in the form of interactive and dynamic Charts and Listviews.
-# Listview plus can be installed from *Salesforce Labs *into any Lightning enabled Organization. 
-# */
-#-------------------------------------------------------------------------------
 ({
     getListRecords: function(component,listname) {
         var spinner = component.find("mySpinner");
@@ -34,7 +22,6 @@
                 component.set("v.showsetup",true);
                 $A.util.toggleClass(spinner, "slds-hide"); 
                 console.log('Failed state');
-                console.log(response);
             }
         }          
         });
@@ -58,7 +45,7 @@
                 this.showErrorToast(component);
                 $A.util.toggleClass(spinner, "slds-hide"); 
                 console.log('Failed state');
-                console.log(response);
+                
             }
         });
         $A.enqueueAction(action);    
@@ -72,7 +59,7 @@
         var state= response.getState();
         if(component.isValid() && state == "SUCCESS"){
             metaMap =  response.getReturnValue();      
-            console.log(metaMap);
+            
             component.set("v.fieldLabels",metaMap['labels']);
             component.set("v.fieldTypes",metaMap['types'])
             component.set("v.fieldNames",metaMap['fieldnames']);
@@ -88,7 +75,7 @@
             	this.showErrorToast();
                 $A.util.toggleClass(spinner, "slds-hide"); 
             	console.log('Failed state');
-                console.log(response);
+                
         } 
         });
         $A.enqueueAction(metaaction);
@@ -97,12 +84,14 @@
         var spinner = component.find("mySpinner");
         var records = [];
         var action= component.get("c.getListFromChart");
+        
         action.setParams({"ChartName":viewname,"pie":filter});
         action.setCallback(this,function(response){
         var state= response.getState();
         if(component.isValid() && state == "SUCCESS"){
                 records=response.getReturnValue();
 				component.set("v.records",this.processRecords(component,event,records));
+            	
             	component.set("v.dbrecords",this.processRecords(component,event,records));
                 component.set("v.recordschanged",true);
             	component.set("v.dataloaded",false);
@@ -139,7 +128,7 @@
             
      },
     processRecords: function(component,event,records) {
-         //var records = component.get("v.records");
+         
          var meta = component.get("v.metadataready");
          var cols = component.get("v.fieldNames");
          var finaldata = [];
@@ -158,14 +147,16 @@
        
         return finaldata;
     },
-    resolveObject : function(component,obj, colname) {
+    resolveObject : function(component,recs, colname) {
+        var obj = [];
+        obj = recs;
     	var a = colname.split('.')[0];
         var b = colname.split('.')[1];
         var objdata = obj[a][b];
-    return objdata;
-		
+        return objdata;            
 	},
-     showToast : function(component, event, helper) {
+    
+    showToast : function(component, event, helper) {
      component.find('notifLib').showToast({
             "title": "Suggestion!",
             "message": "Do a search for easier access to records.",
@@ -233,5 +224,29 @@
         return function (a, b) {
             return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
         }
-    }
+    },
+    ResetToast : function(component) {
+     component.find('notifLib').showToast({
+            "title": "View reset done!",
+            "message": "The data on this chart or listview has been reset to show default data",
+            "mode":"dismissible"
+        });
+    },
+    doReset:function(component,event,helper) {
+        
+        var action= component.get("c.resetListViews");        
+        //action.setParams({""});	
+        action.setCallback(this,function(response){
+        var state= response.getState();
+        
+        if(component.isValid() && state == "SUCCESS"){
+            	this.ResetToast(component);
+            
+    	}
+        else {
+        	console.log("Reset No done correctly");        
+        }
+        });
+        $A.enqueueAction(action);   
+      },
 })

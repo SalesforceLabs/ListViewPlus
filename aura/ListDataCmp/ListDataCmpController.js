@@ -1,21 +1,9 @@
-#-------------------------------------------------------------------------------
-# /* 
-#  * Copyright (c) 2018, salesforce.com, inc.
-#  * All rights reserved.
-#  * Licensed under the BSD 3-Clause license. 
-#  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
-#  */
-# /*
-# *ListView Plus* is a set of Lightning components which can be added to any page in Lightning experience to provide users with quick access to relevant and frequently used data in the form of interactive and dynamic Charts and Listviews.
-# Listview plus can be installed from *Salesforce Labs *into any Lightning enabled Organization. 
-# */
-#-------------------------------------------------------------------------------
 ({  
    //doInit is executed when the ListView loads.
     doInit: function(component, event, helper){      
         var calledFrom = component.get("v.ListViewName");
         var triggered = component.get("v.triggered"); /* If Called from chart */
-        console.log('t'+triggered);
+        
        	var filterCriteria = component.get("v.filterCriteria");
         var limitrows; 
         var LVname = calledFrom;
@@ -30,7 +18,7 @@
         {
            helper.getListMetadata(component,LVname);
            helper.getListRecords(component,LVname); //gets only 100 rows
-           helper.getAllListRecords(component,LVname); //Gets all 2000 rows//
+           //helper.getAllListRecords(component,LVname); //Gets all 2000 rows//
         }
    },
     getMetadata: function(component,event,helper) {
@@ -49,7 +37,7 @@
             component.set("v.records",records);
             var currentrecords=component.get("v.records").slice(0,listsize);    
             component.set("v.currentrecords",currentrecords);
-       		console.log(component.get("v.currentrecords"));
+       		
       	    component.set("v.leftIndex",1);
        		component.set("v.recordCountDisplay",(component.get("v.records")).length); 
             if(records.length> listsize){
@@ -89,7 +77,8 @@
         var listsize = component.get("v.listsize");
 		var searchkey= component.get("v.searchKey");
         var templist,searchrecs,matches_array = [];
-        searchrecs = component.get("v.records");                
+        searchrecs = component.get("v.records");   
+        console.log(searchrecs);
         var pattern = new RegExp(searchkey,"i");
         function getItems(item, index, array) {
             var labels = Object.keys(item);            	
@@ -101,7 +90,7 @@
            			}
             	}
                 else {
-                console.log("Search failed for some reason");
+                console.log("Search failed");
             	}    
             }
         }
@@ -210,11 +199,14 @@
     helpText: function(component,event,helper){
         
         component.find('notifLib').showToast({
-            "title": "Using ListViewPlus Lists",
+            "title": "Using Karibu Lists",
             "message": "This list view shows data for an object based on configuration. The search box can search on an column and search is with the localy available records. The view can be refreshed by clicking the refresh button.",
             "mode":"dismissible"
         });
+    },
+    ListResetHandler: function(component,event,helper) {
         
+        helper.doReset(component,event,helper);
     }
       
 })

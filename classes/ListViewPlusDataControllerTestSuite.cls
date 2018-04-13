@@ -32,7 +32,7 @@ public class ListViewPlusDataControllerTestSuite {
     }
     
     static testmethod void ListViewMetaDataTestCases() {
-        
+    	
         ListComponent__c l1 = new ListComponent__c();     
         l1.List1_query__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity WHERE createdDate = LAST_N_YEARS:1 LIMIT 2000';
         l1.List1_title__c = 'test';
@@ -47,14 +47,14 @@ public class ListViewPlusDataControllerTestSuite {
         l1.List3_title__c = 'test3';
         l1.List3_query__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity WHERE createdDate = LAST_N_YEARS:1 LIMIT 2000';
         upsert l1;  
-        ListViewPlusDataController.getListViewMetadata('ListView3');                
+		ListViewPlusDataController.getListViewMetadata('ListView3');                
         
         ChartComponent__c c1 = new ChartComponent__c();     
         c1.Chart1_listquery__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity WHERE createdDate = LAST_N_YEARS:1 LIMIT 200';
         c1.Chart1_title__c = 'charttest1';
         c1.Chart1_query__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity';
         upsert c1; 
-        ListViewPlusDataController.getListViewMetadata('Chart1');
+		ListViewPlusDataController.getListViewMetadata('Chart1');
         c1.Chart2_query__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity'; 
         c1.Chart2_title__c = 'charttest1';
         c1.Chart2_listquery__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity WHERE createdDate = LAST_N_YEARS:1 LIMIT 200';
@@ -67,7 +67,7 @@ public class ListViewPlusDataControllerTestSuite {
         upsert c1; 
 
     }
-        static testmethod void ChartListTestCases() {
+    	static testmethod void ChartListTestCases() {
         ChartComponent__c c1 = new ChartComponent__c();     
         c1.Chart1_Listquery__c = 'SELECT name,accountid,id,stagename,amount FROM Opportunity WHERE createdDate = LAST_N_YEARS:1 LIMIT 200';
         upsert c1;  
@@ -83,19 +83,19 @@ public class ListViewPlusDataControllerTestSuite {
     
     
     static testmethod void checkFieldTestCases() {
-        List<String> fnames = new List<String>();
+    	List<String> fnames = new List<String>();
         fnames.add('Name');
         fnames.add('createddate');
         fnames.add('Id');
         Map<String,List<String>> fieldinfo = new Map<String,List<String>>();
-        fieldinfo = ListViewPlusDataController.checkFieldType('Account', fnames); 
+ 		fieldinfo = ListViewPlusDataController.checkFieldType('Account', fnames); 
         fnames.add('Amount');
         fnames.add('closedate');
         fnames.add('Id');
         fnames.add('AccountId');
         fieldinfo = ListViewPlusDataController.checkFieldType('Opportunity', fnames); 
         
-    }
+	}
     
     
     static testmethod void parseQueryTestCases() {
@@ -105,6 +105,19 @@ public class ListViewPlusDataControllerTestSuite {
     static testmethod void parseQuery2TestCases() {
         String qstring = 'SELECT name,id,createdDate FROM Account WHERE createdDate = LAST_N_YEARS:1 LIMIT 2000';
         ListViewPlusDataController.parseQuery(qstring);
+    }
+    
+    static testmethod void resetListViewTestCase() {
+         ListComponent__c lc;
+        lc = ListComponent__c.getOrgDefaults();
+        String qstring = 'SELECT name,id,createdDate FROM Account WHERE createdDate = LAST_N_YEARS:1 LIMIT 2000';
+        ListViewPlusDataController.resetListViews();
+    }
+    static testmethod void resetChartsTestCase() {
+        ChartComponent__c cc;
+        cc = ChartComponent__c.getOrgDefaults();
+        String qstring = 'SELECT name,id,createdDate FROM Account WHERE createdDate = LAST_N_YEARS:1 LIMIT 2000';
+        ListViewPlusDataController.resetCharts();
     }
     
 }

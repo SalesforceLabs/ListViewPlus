@@ -7,9 +7,14 @@
 	width:300;
     
 }
+.THIS .cmp-header-text {
+     text-align:left;
+    font-size: large;
+}
 .THIS .chart-div-text {
     /*margin-left:20%;*/
     text-align:center;
+    font-size: medium;
 }
 
 .THIS.customBox{

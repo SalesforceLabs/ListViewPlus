@@ -13,7 +13,7 @@
     
     //Building the 3 charts. Update to use only 1 method in next release///
     buildChart1: function(component,event,helper) {
-      
+       
        if (component.get("v.Chart1Ready") == true) {
            var chartObject =  component.get("v.Chart1");
            
@@ -156,6 +156,10 @@
             "message": "Charts show quarterly data for different objects. Click on a pie to see a detailed list of records.",
             "mode":"dismissible"
         });
+    },
+    chartResetHandler: function(component,event,helper) {
+        
+        helper.doReset(component,event,helper);
     }
     
 })
